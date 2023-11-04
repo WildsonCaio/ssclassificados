@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:ssclassificados/pages/LoginPage.dart';
+import 'package:ssclassificados/views/LoginPage.dart';
 
 import '../components/ListItens.dart';
 import '../components/TabsFilter.dart';
@@ -14,31 +16,30 @@ class HomePage extends StatefulWidget {
 }
 
 
-  bool isLoggeed = true;
 
 class _HomePageState extends State<HomePage> {
 
+  var user;
 
+
+  getUser() async {
+    Firebase.initializeApp();
+    FirebaseAuth auth = await FirebaseAuth.instance;
+    setState(() {
+      user = auth.currentUser!;
+    });
+  }
 
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-      Future.delayed(Duration.zero, (){
-        if (isLoggeed == false) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage(),
-        ),
-      );
-    }
-      });
-
-      
+    getUser();
   }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +66,10 @@ class _HomePageState extends State<HomePage> {
           child: ListView(
         children: [
           UserAccountsDrawerHeader(
-            accountName: Text('wwwwwwwwwww'),
-            accountEmail: Text('www'),
+            accountName: Text(user!.email!),
+            accountEmail: Text(user!.displayName!),
             currentAccountPicture: CircleAvatar(
-              child: Text('W'),
+              child: Text(user[0]),
             ),
           ),
         ],

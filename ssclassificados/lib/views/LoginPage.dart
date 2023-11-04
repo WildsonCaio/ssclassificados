@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:ssclassificados/pages/HomePage.dart';
+import 'package:ssclassificados/services/ValidateLogin.dart';
+import 'package:ssclassificados/views/HomePage.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -12,18 +24,20 @@ class LoginPage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FlutterLogo(size: 250),
+          FlutterLogo(size: 200),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
               children: [
                 TextField(
+                  controller: emailController,
                   decoration: InputDecoration(border: OutlineInputBorder()),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 TextField(
+                  controller: passwordController,
                   decoration: InputDecoration(border: OutlineInputBorder()),
                 ),
                 SizedBox(
@@ -31,11 +45,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ));
+                    validateLogin(context, emailController.text, passwordController.text);
                   },
                   child: Text('Entrar'),
                 )
